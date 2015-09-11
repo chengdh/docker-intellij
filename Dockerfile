@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Fabio Rehm "fgrehm@gmail.com"
+MAINTAINER chengdh "cheng.donghui@gmail.com"
 
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
     apt-get update && apt-get install -y software-properties-common && \
@@ -7,6 +7,7 @@ RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
     apt-get update && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get install -y oracle-java8-installer libxext-dev libxrender-dev libxtst-dev && \
+    apt-get install -y git gradle && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/*
@@ -15,7 +16,7 @@ RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
 # the netbeans image
 RUN apt-get update && apt-get install -y libgtk2.0-0 libcanberra-gtk-module
 
-RUN wget http://download.jetbrains.com/idea/ideaIC-14.0.2.tar.gz -O /tmp/intellij.tar.gz -q && \
+RUN wget http://download.jetbrains.com/idea/ideaIC-14.1.4.tar.gz -O /tmp/intellij.tar.gz -q && \
     echo 'Installing IntelliJ IDEA' && \
     mkdir -p /opt/intellij && \
     tar -xf /tmp/intellij.tar.gz --strip-components=1 -C /opt/intellij && \
