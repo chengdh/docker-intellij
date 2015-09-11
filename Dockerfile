@@ -14,17 +14,13 @@ RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
 
 # Install libgtk as a separate step so that we can share the layer above with
 # the netbeans image
-RUN apt-get update && apt-get install -y libgtk2.0-0 libcanberra-gtk-module
+RUN apt-get update && apt-get install -y curl libgtk2.0-0 libcanberra-gtk-module
 
-RUN wget http://download.jetbrains.com/idea/ideaIC-14.1.4.tar.gz -O /tmp/intellij.tar.gz -q && \
-    echo 'Installing IntelliJ IDEA' && \
-    mkdir -p /opt/intellij && \
-    tar -xf /tmp/intellij.tar.gz --strip-components=1 -C /opt/intellij && \
-    rm /tmp/intellij.tar.gz
+RUN  wget 'https://dl.google.com/dl/android/studio/ide-zips/1.3.0.10/android-studio-ide-141.2117773-linux.zip' -O /tmp/studio.zip -q && unzip -d /opt /tmp/studio.zip && rm /tmp/studio.zip
 
-ADD run /usr/local/bin/intellij
+ADD run /usr/local/bin/android_studio
 
-RUN chmod +x /usr/local/bin/intellij && \
+RUN chmod +x /usr/local/bin/android_studio && \
     mkdir -p /home/developer && \
     echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
     echo "developer:x:1000:" >> /etc/group && \
@@ -36,4 +32,4 @@ RUN chmod +x /usr/local/bin/intellij && \
 USER developer
 ENV HOME /home/developer
 WORKDIR /home/developer
-CMD /usr/local/bin/intellij
+CMD /usr/local/bin/android_studio
