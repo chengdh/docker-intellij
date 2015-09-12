@@ -26,7 +26,10 @@ RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
 
 # Install libgtk as a separate step so that we can share the layer above with
 # the netbeans image
-RUN apt-get update && apt-get install -y libgtk2.0-0 libcanberra-gtk-module
+RUN apt-get install -y libgtk2.0-0 libcanberra-gtk-module
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 RUN wget http://download.jetbrains.com/idea/ideaIC-14.1.4.tar.gz -O /tmp/intellij.tar.gz -q && \
     echo 'Installing IntelliJ IDEA' && \
@@ -48,6 +51,4 @@ RUN chmod +x /usr/local/bin/intellij && \
 USER developer
 ENV HOME /home/developer
 WORKDIR /home/developer
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 CMD /usr/local/bin/intellij
