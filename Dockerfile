@@ -11,6 +11,8 @@ RUN rm -f /etc/service/sshd/down
 # init system will auto-generate one during boot.
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
+RUN /usr/sbin/enable_insecure_key
+
 
 
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
