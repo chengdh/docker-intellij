@@ -1,4 +1,4 @@
-FROM phusion/baseimage-docker:0.9.17
+FROM phusion/baseimage:0.9.17
 MAINTAINER chengdh "cheng.donghui@gmail.com"
 
 # Use baseimage-docker's init system.
