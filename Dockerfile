@@ -3,6 +3,8 @@ MAINTAINER chengdh "cheng.donghui@gmail.com"
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
+RUN chmod 755 /etc/container_environment
+RUN chmod 644 /etc/container_environment.sh /etc/container_environment.json
 
 RUN rm -f /etc/service/sshd/down
 
