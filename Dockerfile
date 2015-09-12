@@ -26,7 +26,7 @@ RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
 
 # Install libgtk as a separate step so that we can share the layer above with
 # the netbeans image
-RUN apt-get install -y libgtk2.0-0 libcanberra-gtk-module
+RUN apt-get update && apt-get install -y libgtk2.0-0 libcanberra-gtk-module
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
