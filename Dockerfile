@@ -3,7 +3,7 @@ MAINTAINER chengdh "cheng.donghui@gmail.com"
 
 # Use baseimage-docker's init system.
 CMD ["sudo /sbin/my_init"]
-RUN sudo /rm -f /etc/service/sshd/down
+RUN sudo rm -f /etc/service/sshd/down
 
 # Regenerate SSH host keys. baseimage-docker does not contain any, so you
 # have to do that yourself. You may also comment out this instruction; the
