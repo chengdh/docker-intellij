@@ -2,9 +2,8 @@ FROM phusion/baseimage:0.9.17
 MAINTAINER chengdh "cheng.donghui@gmail.com"
 
 # Use baseimage-docker's init system.
-#CMD ["/sbin/my_init"]
-RUN /sbin/setuser root /sbin/my_init
-RUN /sbin/setuser root rm -f /etc/service/sshd/down
+CMD ["/sbin/setuser root /sbin/my_init"]
+RUN rm -f /etc/service/sshd/down
 
 # Regenerate SSH host keys. baseimage-docker does not contain any, so you
 # have to do that yourself. You may also comment out this instruction; the
