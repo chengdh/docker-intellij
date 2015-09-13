@@ -14,7 +14,7 @@ else
         echo "Editing $AUTHORIZED_KEYS..."
         cat /etc/insecure_key.pub >> "$AUTHORIZED_KEYS"
         echo "Success: insecure key has been added to $AUTHORIZED_KEYS"
-        cat <<-EOF
+        cat << EOF
 
                 +------------------------------------------------------------------------------+
                 | Insecure SSH key installed                                                   |
@@ -24,7 +24,7 @@ else
                 | Use the private key below to connect with user root                         |
                 +------------------------------------------------------------------------------+
 
-        EOF
+EOF
         cat /etc/insecure_key
         echo -e "\n\n"
 fi
