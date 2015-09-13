@@ -3,9 +3,6 @@ MAINTAINER chengdh "cheng.donghui@gmail.com"
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
-RUN chmod 755 /etc/container_environment
-RUN chmod 644 /etc/container_environment.sh /etc/container_environment.json
-
 RUN rm -f /etc/service/sshd/down
 
 # Regenerate SSH host keys. baseimage-docker does not contain any, so you
@@ -15,6 +12,9 @@ RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 
 RUN /usr/sbin/enable_insecure_key
+
+RUN chmod 755 /etc/container_environment
+RUN chmod 644 /etc/container_environment.sh /etc/container_environment.json
 
 
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
