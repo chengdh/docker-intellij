@@ -39,7 +39,7 @@ RUN wget http://download.jetbrains.com/idea/ideaIC-14.1.4.tar.gz -O /tmp/intelli
 ADD run /usr/local/bin/intellij
 
 RUN chmod +x /usr/local/bin/intellij && \
-    mkdir -p /home/developer
+    mkdir -p /home/developer && \
     echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
     echo "developer:x:1000:" >> /etc/group && \
     echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
