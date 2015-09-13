@@ -50,4 +50,3 @@ RUN chmod +x /usr/local/bin/intellij && \
 USER developer
 ENV HOME /home/developer
 WORKDIR /home/developer
-CMD ["true"]
