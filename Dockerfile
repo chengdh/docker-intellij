@@ -4,13 +4,6 @@ MAINTAINER chengdh "cheng.donghui@gmail.com"
 # Use baseimage-docker's init system.
 RUN sudo rm -f /etc/service/sshd/down
 
-# Regenerate SSH host keys. baseimage-docker does not contain any, so you
-# have to do that yourself. You may also comment out this instruction; the
-# init system will auto-generate one during boot.
-RUN sudo /etc/my_init.d/00_regen_ssh_host_keys.sh
-
-RUN sudo /usr/sbin/enable_insecure_key
-
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
     apt-get update && apt-get install -y software-properties-common xauth && \
     add-apt-repository ppa:webupd8team/java -y && \
@@ -42,6 +35,18 @@ RUN chmod +x /usr/local/bin/intellij && \
     chmod 0440 /etc/sudoers.d/developer && \
     chown developer:developer -R /home/developer && \
     chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
+
+# Regenerate SSH host keys. baseimage-docker does not contain any, so you
+# have to do that yourself. You may also comment out this instruction; the
+# init system will auto-generate one during boot.
+RUN sudo /etc/my_init.d/00_regen_ssh_host_keys.sh
+
+#添加ssh key
+ADD enable_insecure_key_developer /usr/local/bin/enable_insecure_key_developer
+
+RUN chmod +x /usr/local/bin/enable_insecure_key_developer
+
+RUN /usr/local/bin/enable_insecure_key_developer
 
 USER developer
 ENV HOME /home/developer
