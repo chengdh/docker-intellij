@@ -2,33 +2,26 @@ FROM phusion/baseimage-docker
 MAINTAINER chengdh "cheng.donghui@gmail.com"
 
 # Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
 
-RUN rm -f /etc/service/sshd/down
-
-# Regenerate SSH host keys. baseimage-docker does not contain any, so you
-# have to do that yourself. You may also comment out this instruction; the
-# init system will auto-generate one during boot.
-RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
+RUN sudo rm -f /etc/service/sshd/down
 
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
-    apt-get update && apt-get install -y software-properties-common && \
+    apt-get update && apt-get install -y software-properties-common xauth && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get install -y oracle-java8-installer libxext-dev libxrender-dev libxtst-dev && \
-    apt-get install -y git gradle && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /tmp/*
+    apt-get install -y git gradle
 
 # install android-sdk
-RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget curl libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1
+RUN dpkg --add-architecture i386 && apt-get install -y --force-yes expect git wget curl libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1
 
 # Install libgtk as a separate step so that we can share the layer above with
 # the netbeans image
 RUN apt-get install -y curl libgtk2.0-0 libcanberra-gtk-module
 
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r24.3.3-linux.tgz && tar xzf android-sdk.tgz && rm -f android-sdk.tgz && chown -R root.root android-sdk-linux
 
@@ -58,10 +51,18 @@ RUN chmod +x /usr/local/bin/android_studio && \
     chown developer:developer -R /home/developer && \
     chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
 
+# Regenerate SSH host keys. baseimage-docker does not contain any, so you
+# have to do that yourself. You may also comment out this instruction; the
+# init system will auto-generate one during boot.
+RUN sudo /etc/my_init.d/00_regen_ssh_host_keys.sh
+
+#添加ssh key
+ADD enable_insecure_key_developer /usr/local/bin/enable_insecure_key_developer
+
+RUN chmod +x /usr/local/bin/enable_insecure_key_developer
+
+RUN /usr/local/bin/enable_insecure_key_developer
+
 USER developer
 ENV HOME /home/developer
 WORKDIR /home/developer
-CMD /usr/local/bin/android_studio
-
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
