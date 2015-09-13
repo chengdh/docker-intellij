@@ -10,12 +10,7 @@ RUN rm -f /etc/service/sshd/down
 # init system will auto-generate one during boot.
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
-
 RUN /usr/sbin/enable_insecure_key
-
-RUN chmod -R 755 /etc/container_environment
-RUN chmod 644 /etc/container_environment.sh /etc/container_environment.json
-
 
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
     apt-get update && apt-get install -y software-properties-common xauth && \
@@ -26,7 +21,7 @@ RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
     apt-get install -y git gradle && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -rf /tmp/*
+    rm -rf /tmp/k
 
 # Install libgtk as a separate step so that we can share the layer above with
 # the netbeans image
@@ -45,15 +40,14 @@ ADD run /usr/local/bin/intellij
 
 RUN chmod +x /usr/local/bin/intellij && \
     mkdir -p /home/developer
-#    echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
-#    echo "developer:x:1000:" >> /etc/group && \
-#    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
-#    chmod 0440 /etc/sudoers.d/developer && \
-#    chown developer:developer -R /home/developer && \
-#    chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
+    echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
+    echo "developer:x:1000:" >> /etc/group && \
+    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
+    chmod 0440 /etc/sudoers.d/developer && \
+    chown developer:developer -R /home/developer && \
+    chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
 
-USER root
+USER developer
 ENV HOME /home/developer
 WORKDIR /home/developer
-#CMD /usr/local/bin/intellij
 CMD ["true"]
