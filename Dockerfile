@@ -57,11 +57,11 @@ RUN chmod +x /usr/local/bin/android_studio && \
 RUN sudo /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 #添加ssh key
-ADD enable_insecure_key_developer /usr/local/bin/enable_insecure_key_developer
+ADD enable_insecure_key_developer /usr/local/bin/enable_security_key_developer
 
-RUN chmod +x /usr/local/bin/enable_insecure_key_developer
+RUN chmod +x /usr/local/bin/enable_security_key_developer
 
-RUN /usr/local/bin/enable_insecure_key_developer
+RUN /usr/local/bin/enable_security_key_developer
 
 USER developer
 ENV HOME /home/developer
