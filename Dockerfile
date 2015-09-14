@@ -27,6 +27,7 @@ RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.c
 
 # Setup environment
 ENV ANDROID_HOME /opt/android-sdk-linux
+RUN chmod +x /opt/tools/android-accept-licenses.sh
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 # Install sdk elements
